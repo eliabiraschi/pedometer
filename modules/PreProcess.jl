@@ -36,7 +36,11 @@ function run(input:: Channel)
                         put!(output, interpolated)
                         interpolationcount += 1
                     end
-                    popfirst!(window)
+                    if !isempty(window)
+                        popfirst!(window)
+                    else
+                        println("EMPTY!")
+                    end
                 end
             end
         end
