@@ -4,11 +4,10 @@ include("../Types.jl")
 
 export run
 
-function run(input:: Channel)
+function run(input:: Channel, threshold)
     count = 0
     mean = 0
     std = 0
-    threshold = 1.2
     return function (output:: Channel)
         for dp in input
             count+=1

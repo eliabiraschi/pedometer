@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # better performances if /tmp is tmpfs
-echo "T,X,Y,Z" >> /tmp/accel_data.csv
+echo "T,X,Y,Z" > /tmp/accel_data.csv
 
 while :
 do

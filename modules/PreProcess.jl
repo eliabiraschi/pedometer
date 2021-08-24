@@ -4,6 +4,8 @@ include("../Types.jl")
 
 export run
 
+INTERPOLATIONTIME = 10 # in millis
+
 scaletime = (time, starttime) -> (time - starttime)
 
 function linearInterpolate(dp1:: Types.Types.Datapoint, dp2:: Types.Types.Datapoint, interpolatedtime:: Int)::Types.Types.Datapoint
@@ -16,7 +18,6 @@ end
 function run(input:: Channel)
     window = []
     starttime = -1
-    interpolationtime = 100
     interpolationcount = 0
     return function (output:: Channel)
         for dp in input
@@ -28,9 +29,9 @@ function run(input:: Channel)
             if size(window)[1] >= 2
                 dp1 = deepcopy(window[1])
                 dp2 = deepcopy(window[2])
-                numberofpoints = ceil(Int, (dp2.time - dp1.time) / interpolationtime)
+                numberofpoints = ceil(Int, (dp2.time - dp1.time) / INTERPOLATIONTIME)
                 for i in range(1, numberofpoints; step=1)
-                    interpolatedtime = interpolationcount * interpolationtime
+                    interpolatedtime = interpolationcount * INTERPOLATIONTIME
                     if (dp1.time <= interpolatedtime < dp2.time)
                         interpolated = linearInterpolate(dp1, dp2, interpolatedtime)
                         put!(output, interpolated)

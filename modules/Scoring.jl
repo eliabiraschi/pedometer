@@ -4,9 +4,7 @@ include("../Types.jl")
 
 export run
 
-WINDOW_SIZE = 34
-
-function scorePeak(data)
+function scorePeak(data, window_size)
         midpoint = Int(size(data)[1] / 2)
         diffLeft = 0.0
         diffRight = 0.0
@@ -18,17 +16,17 @@ function scorePeak(data)
             diffRight += data[midpoint].magnitude - data[j].magnitude
         end
         
-        (diffRight + diffLeft) / WINDOW_SIZE
+        (diffRight + diffLeft) / window_size
 end
 
-function run(input:: Channel)
+function run(input:: Channel, window_size)
     window = []
-    new_dp_index = Int(WINDOW_SIZE / 2)
+    new_dp_index = Int(window_size / 2)
     return function (output:: Channel)
         for dp in input
             push!(window, dp)
-            if size(window)[1] == WINDOW_SIZE
-                score = scorePeak(window)
+            if size(window)[1] == window_size
+                score = scorePeak(window, window_size)
                 new_dp = Types.Datapoint(window[new_dp_index].time, score)
                 put!(output, new_dp)
                 popfirst!(window)

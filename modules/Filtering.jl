@@ -8,7 +8,7 @@ FILTER_RANGE = 1:12
 FILTER_LENGTH = size(FILTER_RANGE)[1]
 FILTER_STD = 0.35
 HALF_FILTER_LENGTH = FILTER_LENGTH / 2
-B = (FILTER_STD * FILTER_LENGTH / 2) ^ 2
+B = (FILTER_STD * HALF_FILTER_LENGTH) ^ 2
 
 function generateCoefficients()
     coeff = []
@@ -34,7 +34,7 @@ function run(input:: Channel)
                 for i in FILTER_RANGE
                     sum += window[i].magnitude * filtercoefficients[i]
                 end
-                new_dp = Types.Datapoint(window[Int(FILTER_LENGTH / 2)].time, sum / filtersum)
+                new_dp = Types.Datapoint(window[Int(HALF_FILTER_LENGTH)].time, sum / filtersum)
                 put!(output, new_dp)
                 popfirst!(window)
             end
