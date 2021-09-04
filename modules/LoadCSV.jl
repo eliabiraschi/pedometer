@@ -8,7 +8,7 @@ export load_csv
 timescalingfactor = 1000000 # Convert ns to ms.
 
 function load_csv(output:: Channel)
-    for row in CSV.File("~/_dev/pedometer/data/4264_out.csv")
+    for row in CSV.File("~/_dev/pedometer/data/indoor_100steps.csv")
         if row[1] === "T"
             continue
         end
